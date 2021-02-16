@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.wtt.agribusiness</groupId>
+    <artifactId>agribusiness</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>agribusiness</name>
+    <description>助农销售网站—聚合服务</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>agribusiness-ware</module>
+        <module>agribusiness-product</module>
+        <module>agribusiness-order</module>
+        <module>agribusiness-member</module>
+        <module>agribusiness-coupon</module>
+    </modules>
+
+</project>

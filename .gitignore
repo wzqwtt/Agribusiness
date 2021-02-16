@@ -8,3 +8,17 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
+
+# 忽略maven文件
+**/.mvn
+**/mvnw
+**/mvnw.cmd
+
+# 忽略项目中编译后产生的文件
+**/target
+
+# 忽略子项目中的.gitignore文件
+**/.gitignore
+
+# 忽略总项目路径下的.idea文件.
+.idea

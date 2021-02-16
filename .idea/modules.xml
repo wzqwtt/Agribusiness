@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/agribusiness.iml" filepath="$PROJECT_DIR$/.idea/agribusiness.iml" />
+      <module fileurl="file://$PROJECT_DIR$/agribusiness-coupon/agribusiness-coupon.iml" filepath="$PROJECT_DIR$/agribusiness-coupon/agribusiness-coupon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/agribusiness-member/agribusiness-member.iml" filepath="$PROJECT_DIR$/agribusiness-member/agribusiness-member.iml" />
+      <module fileurl="file://$PROJECT_DIR$/agribusiness-order/agribusiness-order.iml" filepath="$PROJECT_DIR$/agribusiness-order/agribusiness-order.iml" />
+      <module fileurl="file://$PROJECT_DIR$/agribusiness-product/agribusiness-product.iml" filepath="$PROJECT_DIR$/agribusiness-product/agribusiness-product.iml" />
+      <module fileurl="file://$PROJECT_DIR$/agribusiness-ware/agribusiness-ware.iml" filepath="$PROJECT_DIR$/agribusiness-ware/agribusiness-ware.iml" />
+    </modules>
+  </component>
+</project>
