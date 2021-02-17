@@ -15,9 +15,15 @@
     <description>助农销售网站—优惠服务</description>
     <properties>
         <java.version>1.8</java.version>
-        <spring-cloud.version>2020.0.1</spring-cloud.version>
+        <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>com.wtt.agribusiness</groupId>
+            <artifactId>agribusiness-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

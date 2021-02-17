@@ -21,4 +21,4 @@ buildNumber.properties
 **/.gitignore
 
 # 忽略总项目路径下的.idea文件.
-.idea
+**/.idea/
