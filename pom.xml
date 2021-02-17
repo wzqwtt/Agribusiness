@@ -17,6 +17,10 @@
         <module>agribusiness-member</module>
         <module>agribusiness-coupon</module>
         <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>agribusiness-common</module>
     </modules>
+
+
 
 </project>
