@@ -1,5 +1,6 @@
 package com.wtt.agribusiness.coupon.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -30,6 +31,14 @@ import com.wtt.common.utils.R;
 public class CouponController {
     @Autowired
     private CouponService couponService;
+
+    //测试方法
+    @RequestMapping("/member/list")
+    public R membercoupons(){
+        CouponEntity couponEntity = new CouponEntity();
+        couponEntity.setCouponName("满100减10");
+        return R.ok().put("coupons", Arrays.asList(couponEntity));
+    }
 
     /**
      * 列表
