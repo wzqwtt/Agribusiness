@@ -40,7 +40,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<CategoryEntity> entities = baseMapper.selectList(null);
 
         //2、组装成父子的树形结构
-        //2.1）找到所有的一级分类 -- 使用stream().filter进行过滤，里面是lambda表达式，等价于一个匿名函数
+        //2.1 找到所有的一级分类 -- 使用stream().filter进行过滤，里面是lambda表达式，等价于一个匿名函数
         List<CategoryEntity> level1Menus = entities.stream().filter(categoryEntity ->
             categoryEntity.getParentCid() == 0  //一级分类
         ).map((menu)->{
