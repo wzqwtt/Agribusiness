@@ -14,11 +14,19 @@ spring:
               - PUT
               - OPTION
       routes:
+        - id: product_route
+          uri: lb://agribusiness-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
         - id: admin_route
           uri: lb://renren-fast
           predicates:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+
 ## 前端项目，/api
 ## http://localhost:88/api/captcha.jpg
