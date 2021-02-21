@@ -55,17 +55,17 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         json = xssEncode(json);
         final ByteArrayInputStream bis = new ByteArrayInputStream(json.getBytes("utf-8"));
         return new ServletInputStream() {
-            @Override
+            //@Override
             public boolean isFinished() {
                 return true;
             }
 
-            @Override
+           // @Override
             public boolean isReady() {
                 return true;
             }
 
-            @Override
+           // @Override
             public void setReadListener(ReadListener readListener) {
 
             }
