@@ -14,6 +14,7 @@ import com.wtt.common.utils.Query;
 import com.wtt.agribusiness.product.dao.BrandDao;
 import com.wtt.agribusiness.product.entity.BrandEntity;
 import com.wtt.agribusiness.product.service.BrandService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("brandService")
@@ -41,6 +42,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
         return new PageUtils(page);
     }
 
+    @Transactional
     @Override
     public void updateDetail(BrandEntity brand) {
         //保证冗余字段的数据一致

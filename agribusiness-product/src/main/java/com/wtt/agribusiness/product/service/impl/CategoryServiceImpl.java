@@ -19,6 +19,8 @@ import com.wtt.common.utils.Query;
 import com.wtt.agribusiness.product.dao.CategoryDao;
 import com.wtt.agribusiness.product.entity.CategoryEntity;
 import com.wtt.agribusiness.product.service.CategoryService;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("categoryService")
@@ -83,6 +85,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      * 级联更新所有关联的数据
      * @param category
      */
+    @Transactional
     @Override
     public void updateCascade(CategoryEntity category) {
         this.updateById(category);
