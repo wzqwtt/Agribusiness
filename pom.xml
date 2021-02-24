@@ -19,6 +19,7 @@
         <module>renren-fast</module>
         <module>renren-generator</module>
         <module>agribusiness-common</module>
+        <module>agribusiness-third-party</module>
     </modules>
 
 
