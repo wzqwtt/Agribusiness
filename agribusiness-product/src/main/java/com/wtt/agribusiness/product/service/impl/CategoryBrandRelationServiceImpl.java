@@ -1,5 +1,6 @@
 package com.wtt.agribusiness.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.wtt.agribusiness.product.dao.BrandDao;
 import com.wtt.agribusiness.product.dao.CategoryDao;
 import com.wtt.agribusiness.product.entity.BrandEntity;
@@ -50,6 +51,22 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
 
         this.save(categoryBrandRelation);
 
+    }
+
+    @Override
+    public void updateBrand(Long brandId, String name) {
+
+        CategoryBrandRelationEntity relationEntity = new CategoryBrandRelationEntity();
+        relationEntity.setBrandId(brandId);
+        relationEntity.setBrandName(name);
+        this.update(relationEntity,
+                new UpdateWrapper<CategoryBrandRelationEntity>().eq("brand_id",brandId)
+        );
+    }
+
+    @Override
+    public void updateCategory(Long catId, String name) {
+        this.baseMapper.updateCategory(catId,name);
     }
 
 }
