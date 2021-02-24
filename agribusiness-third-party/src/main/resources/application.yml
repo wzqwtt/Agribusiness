@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    alicloud:
+      access-key: LTAI4GCc6NNhAPGCf5PSFi4R
+      secret-key: ioyHDagLGLZmG1DMEk8vEhKFVRNaIA
+      oss:
+        endpoint: oss-cn-beijing.aliyuncs.com
+        bucket: agribusiness
+  application:
+    name: agribusiness-third-party
+server:
+  port: 30000
+

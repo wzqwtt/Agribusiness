@@ -1,9 +1,9 @@
 package com.wtt.agribusiness.product;
 
 
-import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.OSSClientBuilder;
+//import com.aliyun.oss.OSS;
+//import com.aliyun.oss.OSSClient;
+//import com.aliyun.oss.OSSClientBuilder;
 import com.wtt.agribusiness.product.entity.BrandEntity;
 import com.wtt.agribusiness.product.service.BrandService;
 
@@ -25,8 +25,8 @@ public class AgribusinessProductApplicationTests {
     @Autowired
     BrandService brandService;
 
-    @Autowired
-    OSSClient ossClient;
+//    @Autowired
+//    OSSClient ossClient;
 
     @Test
     public void testUpload() throws FileNotFoundException {
@@ -40,13 +40,13 @@ public class AgribusinessProductApplicationTests {
 //        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
 // 上传文件流。
-        InputStream inputStream = new FileInputStream("D:\\wtt\\assert\\aa64034f78f0f7363a4c2d510455b319ebc4132b.jpg");
-        ossClient.putObject("agribusiness", "aa64034f78f0f7363a4c2d510455b319ebc4132b.jpg", inputStream);
-
-// 关闭OSSClient。
-        ossClient.shutdown();
-
-        System.out.println("wen jian shang chuan cheng gong!!");
+//        InputStream inputStream = new FileInputStream("D:\\wtt\\assert\\aa64034f78f0f7363a4c2d510455b319ebc4132b.jpg");
+//        ossClient.putObject("agribusiness", "aa64034f78f0f7363a4c2d510455b319ebc4132b.jpg", inputStream);
+//
+//// 关闭OSSClient。
+//        ossClient.shutdown();
+//
+//        System.out.println("wen jian shang chuan cheng gong!!");
     }
 
     @Test
