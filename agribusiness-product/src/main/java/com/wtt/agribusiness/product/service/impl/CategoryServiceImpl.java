@@ -66,7 +66,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             return categoryEntity.getParentCid().equals(root.getCatId());
         }).map(categoryEntity -> {
             //1、找到子菜单
-            System.out.println("getChildren "+categoryEntity.getName());
             categoryEntity.setChildren(getChildren(categoryEntity,all));
             return categoryEntity;
         }).sorted((menu1,menu2)->{
