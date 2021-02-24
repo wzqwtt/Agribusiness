@@ -9,6 +9,9 @@ import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
+
+import javax.validation.constraints.*;
 
 /**
  * 品牌
@@ -32,14 +35,18 @@ public class BrandEntity implements Serializable {
 	/**
 	 * 品牌名
 	 */
+	@NotBlank(message = "品牌名必须提交")
 	private String name;
 	/**
 	 * 品牌logo地址
 	 */
+	@NotEmpty
+	@URL(message = "logo必须是一个合法的url地址")
 	private String logo;
 	/**
 	 * 介绍
 	 */
+
 	private String descript;
 	/**
 	 * 显示状态[0-不显示；1-显示]
@@ -48,10 +55,14 @@ public class BrandEntity implements Serializable {
 	/**
 	 * 检索首字母
 	 */
+	@NotEmpty
+	@Pattern(regexp = "/^[a-zA-Z]$/",message = "检索首字母必须是一个字母")
 	private String firstLetter;
 	/**
 	 * 排序
 	 */
+	@NotNull
+	@Min(value = 0,message = "排序必须大于等于0")
 	private Integer sort;
 
 }
