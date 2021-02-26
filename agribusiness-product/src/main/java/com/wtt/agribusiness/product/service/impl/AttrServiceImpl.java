@@ -33,6 +33,7 @@ import com.wtt.agribusiness.product.dao.AttrDao;
 import com.wtt.agribusiness.product.entity.AttrEntity;
 import com.wtt.agribusiness.product.service.AttrService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 
 @Service("attrService")
@@ -206,6 +207,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
             return attr.getAttrId();
         }).collect(Collectors.toList());
 
+        if(CollectionUtils.isEmpty(attrIds)){
+            return null;
+        }
         List<AttrEntity> attrEntities = this.listByIds(attrIds);
 
         return attrEntities;
@@ -221,6 +225,52 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         }).collect(Collectors.toList());
 
         relationDao.deleteBatchRelation(entities);
+    }
+
+    /**
+     * 获取当前分组没有关联的所有属性
+     * @param params
+     * @param attrgroupId
+     * @return
+     */
+    @Override
+    public PageUtils getNoRelationAttr(Map<String, Object> params, Long attrgroupId) {
+        //1 当前分组只能关联自己所属分类的属性
+        AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrgroupId);
+        Long catelogId = attrGroupEntity.getCatelogId();
+
+        //2 当前分组只能关联别的分组没有引用的属性
+        //2.1 当前分类下的其他分组
+        List<AttrGroupEntity> group = attrGroupDao.selectList(
+                new QueryWrapper<AttrGroupEntity>()
+                        .eq("catelog_id", catelogId));
+
+        List<Long> collect = group.stream().map(item -> {
+            return item.getAttrGroupId();
+        }).collect(Collectors.toList());
+
+        //2.2 这些分组关联的属性
+        List<AttrAttrgroupRelationEntity> groupId = relationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().in("attr_group_id", collect));
+        List<Long> attrIds = groupId.stream().map(item -> {
+            return item.getAttrId();
+        }).collect(Collectors.toList());
+
+        //2.3 从当前分类的所有属性中移除这些属性
+        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<AttrEntity>().eq("catelog_id", catelogId).eq("attr_type",ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode());
+        if(attrIds!=null && attrIds.size()>0){
+            wrapper.notIn("attr_id", attrIds);
+        }
+        String key = (String) params.get("key");
+        if(!StringUtils.isNullOrEmpty(key)){
+            wrapper.and((w)->{
+                w.eq("attr_id",key).or().like("attr_name",key);
+            });
+        }
+        IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), wrapper);
+
+        PageUtils pageUtils = new PageUtils(page);
+
+        return pageUtils;
     }
 
 }
