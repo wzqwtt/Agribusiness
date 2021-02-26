@@ -9,6 +9,7 @@ import com.wtt.agribusiness.product.entity.AttrAttrgroupRelationEntity;
 import com.wtt.agribusiness.product.entity.AttrGroupEntity;
 import com.wtt.agribusiness.product.entity.CategoryEntity;
 import com.wtt.agribusiness.product.service.CategoryService;
+import com.wtt.agribusiness.product.vo.AttrGroupRelationVo;
 import com.wtt.agribusiness.product.vo.AttrRespVo;
 import com.wtt.agribusiness.product.vo.AttrVo;
 import com.wtt.common.constant.ProductConstant;
@@ -16,6 +17,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -188,6 +191,36 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
             }
         }
 
+    }
+
+    /**
+     * 根据分组ID查询关联的所有基本属性
+     * @param attrgroupId
+     * @return
+     */
+    @Override
+    public List<AttrEntity> getRelationAttr(Long attrgroupId) {
+        List<AttrAttrgroupRelationEntity> entities = relationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", attrgroupId));
+
+        List<Long> attrIds = entities.stream().map((attr) -> {
+            return attr.getAttrId();
+        }).collect(Collectors.toList());
+
+        List<AttrEntity> attrEntities = this.listByIds(attrIds);
+
+        return attrEntities;
+    }
+
+    @Override
+    public void deleteRelation(AttrGroupRelationVo[] vos) {
+//        relationDao.delete(new QueryWrapper<>().eq("attr_id",1L).eq("attr_group_id",1L));
+        List<AttrAttrgroupRelationEntity> entities = Arrays.asList(vos).stream().map((item) -> {
+            AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
+            BeanUtils.copyProperties(item, relationEntity);
+            return relationEntity;
+        }).collect(Collectors.toList());
+
+        relationDao.deleteBatchRelation(entities);
     }
 
 }

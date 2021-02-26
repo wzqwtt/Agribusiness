@@ -1,11 +1,13 @@
 package com.wtt.agribusiness.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wtt.agribusiness.product.vo.AttrGroupRelationVo;
 import com.wtt.agribusiness.product.vo.AttrRespVo;
 import com.wtt.agribusiness.product.vo.AttrVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.product.entity.AttrEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,5 +28,9 @@ public interface AttrService extends IService<AttrEntity> {
     AttrRespVo getAttrInfo(Long attrId);
 
     void updateAttr(AttrVo attr);
+
+    List<AttrEntity> getRelationAttr(Long attrgroupId);
+
+    void deleteRelation(AttrGroupRelationVo[] vos);
 }
 

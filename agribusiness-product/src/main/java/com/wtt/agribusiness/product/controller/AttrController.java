@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.wtt.agribusiness.product.vo.AttrGroupRelationVo;
 import com.wtt.agribusiness.product.vo.AttrRespVo;
 import com.wtt.agribusiness.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
