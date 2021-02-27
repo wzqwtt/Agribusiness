@@ -1,9 +1,11 @@
 package com.wtt.agribusiness.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wtt.agribusiness.product.vo.AttrGroupWithAttrsVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.product.entity.AttrGroupEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +20,8 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     PageUtils queryPage(Map<String, Object> params, long catelogId);
+
+    List<AttrGroupWithAttrsVo> getAttrGroupWithAttrsByCatelogId(Long catelogId);
+
 }
 

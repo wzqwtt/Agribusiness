@@ -6,9 +6,11 @@ import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.wtt.agribusiness.product.entity.AttrEntity;
+import com.wtt.agribusiness.product.service.AttrAttrgroupRelationService;
 import com.wtt.agribusiness.product.service.AttrService;
 import com.wtt.agribusiness.product.service.CategoryService;
 import com.wtt.agribusiness.product.vo.AttrGroupRelationVo;
+import com.wtt.agribusiness.product.vo.AttrGroupWithAttrsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +39,28 @@ public class AttrGroupController {
 
     @Autowired
     AttrService attrService;
+
+    @Autowired
+    AttrAttrgroupRelationService relationService;
+
+    ///product/attrgroup/attr/relation
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrGroupRelationVo> vos ){
+        relationService.saveBatch(vos);
+        return R.ok();
+    }
+
+
+    ///product/attrgroup/{catelogId}/withattr
+    @GetMapping("/{catelogId}/withattr")
+    public R getAttrGroupWithAttrs(@PathVariable("catelogId") Long catelogId){
+        //查出当前下的所有属性分组
+
+        //查出每个属性分组的所有属性
+        List<AttrGroupWithAttrsVo> vos = attrGroupService.getAttrGroupWithAttrsByCatelogId(catelogId);
+
+        return R.ok().put("data",vos);
+    }
 
     ///product/attrgroup/attr/relation/delete
     @PostMapping("/attr/relation/delete")
