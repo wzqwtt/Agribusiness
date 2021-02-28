@@ -3,36 +3,22 @@
   */
 package com.wtt.agribusiness.product.vo;
 
+import lombok.Data;
+
+import java.math.BigDecimal;
+
 /**
  * Auto-generated: 2021-02-28 13:27:40
  *
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
+@Data
 public class MemberPrice {
 
-    private int id;
+    private Long id;
     private String name;
-    private double price;
-    public void setId(int id) {
-         this.id = id;
-     }
-     public int getId() {
-         return id;
-     }
+    private BigDecimal price;
 
-    public void setName(String name) {
-         this.name = name;
-     }
-     public String getName() {
-         return name;
-     }
-
-    public void setPrice(double price) {
-         this.price = price;
-     }
-     public double getPrice() {
-         return price;
-     }
 
 }
