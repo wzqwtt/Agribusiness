@@ -1,6 +1,7 @@
 package com.wtt.agribusiness.coupon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wtt.common.to.SkuReductionTo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.coupon.entity.SkuFullReductionEntity;
 
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface SkuFullReductionService extends IService<SkuFullReductionEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveSkuReduction(SkuReductionTo reductionTo);
 }
 
