@@ -11,9 +11,11 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-
   application:
     name: agribusiness-product
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
@@ -25,6 +27,5 @@ mybatis-plus:
 logging:
   level:
     com.wtt.agribusiness: debug
-
 
 
