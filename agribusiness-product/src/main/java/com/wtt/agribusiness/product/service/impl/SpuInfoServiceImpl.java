@@ -1,5 +1,6 @@
 package com.wtt.agribusiness.product.service.impl;
 
+import com.mysql.cj.util.StringUtils;
 import com.wtt.agribusiness.product.entity.*;
 import com.wtt.agribusiness.product.feign.CouponFeignService;
 import com.wtt.agribusiness.product.service.*;
@@ -11,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +65,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         return new PageUtils(page);
     }
 
+    /**
+     * 保存失败后的操作
+     * @param vo
+     */
     @Transactional
     @Override
     public void saveSpuInfo(SpuSaveVo vo) {
@@ -138,6 +144,9 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                     skuImagesEntity.setImgUrl(img.getImgUrl());
                     skuImagesEntity.setDefaultImg(img.getDefaultImg());
                     return skuImagesEntity;
+                }).filter(entity ->{
+                    //返回true就是需要，false就是剔除
+                    return !StringUtils.isNullOrEmpty(entity.getImgUrl());
                 }).collect(Collectors.toList());
                 //5.2）sku图片信息 pms_sku_images
                 skuImagesService.saveBatch(imageEntities);
@@ -157,9 +166,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 SkuReductionTo skuReductionTo = new SkuReductionTo();
                 BeanUtils.copyProperties(item,skuReductionTo);
                 skuReductionTo.setSkuId(skuId);
-                R r1 = couponFeignService.saveSkuReduction(skuReductionTo);
-                if(r1.getCode() != 0){
-                    log.error("远程保存sku优惠信息失败");
+                if(skuReductionTo.getFullCount() > 0 || skuReductionTo.getFullPrice().compareTo(BigDecimal.ZERO) == 1){
+                    R r1 = couponFeignService.saveSkuReduction(skuReductionTo);
+                    if(r1.getCode() != 0){
+                        log.error("远程保存sku优惠信息失败");
+                    }
                 }
             });
         }

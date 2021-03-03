@@ -19,3 +19,8 @@ mybatis-plus:
     db-config:
       id-type: auto
 
+
+logging:
+  level:
+    com.wtt.agribusiness: debug
+

@@ -34,16 +34,16 @@ import com.wtt.common.utils.R;
 public class CouponController {
 
 
-    //配置中心测试
-    @Value("${coupon.user.name}")
-    private String name;
-    @Value("${coupon.user.age}")
-    private String age;
-
-    @RequestMapping("/test")
-    public R test(){
-        return R.ok().put("name",name).put("age",age);
-    }
+//    //配置中心测试
+//    @Value("${coupon.user.name}")
+//    private String name;
+//    @Value("${coupon.user.age}")
+//    private String age;
+//
+//    @RequestMapping("/test")
+//    public R test(){
+//        return R.ok().put("name",name).put("age",age);
+//    }
 
 
     @Autowired
