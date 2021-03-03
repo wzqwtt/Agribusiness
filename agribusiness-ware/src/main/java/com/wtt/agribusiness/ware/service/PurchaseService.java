@@ -1,6 +1,7 @@
 package com.wtt.agribusiness.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wtt.agribusiness.ware.vo.MergeVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.ware.entity.PurchaseEntity;
 
@@ -16,5 +17,9 @@ import java.util.Map;
 public interface PurchaseService extends IService<PurchaseEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    PageUtils queryPageUnreceive(Map<String, Object> params);
+
+    void mergePurchase(MergeVo mergeVo);
 }
 
