@@ -2,6 +2,7 @@ package com.wtt.agribusiness.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wtt.agribusiness.ware.vo.MergeVo;
+import com.wtt.agribusiness.ware.vo.PurchaseDoneVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.ware.entity.PurchaseEntity;
 
@@ -24,5 +25,7 @@ public interface PurchaseService extends IService<PurchaseEntity> {
     void mergePurchase(MergeVo mergeVo);
 
     void received(List<Long> ids);
+
+    void done(PurchaseDoneVo doneVo);
 }
 

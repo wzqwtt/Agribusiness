@@ -7,6 +7,7 @@ import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.wtt.agribusiness.ware.vo.MergeVo;
+import com.wtt.agribusiness.ware.vo.PurchaseDoneVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,15 +31,26 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
+    /**
+     * 完成采购单
+     * @param ids
+     * @return
+     */
 
+    @PostMapping("/done")
+    public R finish(@RequestBody PurchaseDoneVo doneVo){
+        purchaseService.done(doneVo);
+        return R.ok();
+    }
+
+
+    //TODO app领取采购单
     /**
      * 模拟app领取采购单
      * /received
      * @param ids
      * @return
      */
-
-
     @PostMapping("/received")
     public R received(@RequestBody List<Long> ids){
 
