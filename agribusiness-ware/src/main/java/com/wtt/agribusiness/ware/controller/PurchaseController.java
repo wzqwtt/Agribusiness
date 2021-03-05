@@ -2,6 +2,7 @@ package com.wtt.agribusiness.ware.controller;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,6 +29,23 @@ import com.wtt.common.utils.R;
 public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
+
+
+    /**
+     * 模拟app领取采购单
+     * /received
+     * @param ids
+     * @return
+     */
+
+
+    @PostMapping("/received")
+    public R received(@RequestBody List<Long> ids){
+
+        purchaseService.received(ids);
+
+        return R.ok();
+    }
 
     ///ware/purchase/merge
     @PostMapping("/merge")
