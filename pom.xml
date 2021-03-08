@@ -20,6 +20,8 @@
         <module>renren-generator</module>
         <module>agribusiness-common</module>
         <module>agribusiness-third-party</module>
+        <module>agribusiness-gateway</module>
+        <module>agribusiness-search</module>
     </modules>
 
 

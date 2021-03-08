@@ -1,9 +1,11 @@
 package com.wtt.agribusiness.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wtt.agribusiness.ware.vo.SkuHasStockVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.ware.entity.WareSkuEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +20,12 @@ public interface WareSkuService extends IService<WareSkuEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     void addStock(Long skuId, Long wareId, Integer skuNum);
+
+    /**
+     * 检查库存
+     * @param skuIds
+     * @return
+     */
+    List<SkuHasStockVo> getSkusHasStock(List<Long> skuIds);
 }
 

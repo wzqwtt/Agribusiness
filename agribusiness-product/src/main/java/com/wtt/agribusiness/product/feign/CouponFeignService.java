@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient("agribusiness-coupon")
 public interface CouponFeignService {
-
     @PostMapping("/coupon/spubounds/save")
     R saveSpuBounds(@RequestBody SpuBoundTo spuBoundTo);
 
