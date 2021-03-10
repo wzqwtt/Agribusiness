@@ -5,7 +5,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://82.156.24.170:3306/agribusiness_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.56.101:3306/agribusiness_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:

@@ -1,5 +1,6 @@
 package com.wtt.agribusiness.thirdparty;
 
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AgribusinessThirdPartyApplicationTests {
     }
 
     @Autowired
-    OSSClient ossClient;
+    OSS ossClient;
 
     @Test
     public void testUpload() throws FileNotFoundException {

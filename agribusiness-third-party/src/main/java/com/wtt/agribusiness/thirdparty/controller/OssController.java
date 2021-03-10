@@ -34,6 +34,7 @@ public class OssController {
 
     @RequestMapping("/oss/policy")
     public R policy() {
+        //以下注释的都在配置文件里面
 //        String accessId = "<yourAccessKeyId>"; // 请填写您的AccessKeyId。
 //        String accessKey = "<yourAccessKeySecret>"; // 请填写您的AccessKeySecret。
 //        String endpoint = "oss-cn-hangzhou.aliyuncs.com"; // 请填写您的 endpoint。
