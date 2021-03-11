@@ -1,4 +1,4 @@
-package com.wtt.agribusiness.product.controller;
+package com.wtt.agribusiness.product.app;
 
 import java.util.Arrays;
 import java.util.Map;

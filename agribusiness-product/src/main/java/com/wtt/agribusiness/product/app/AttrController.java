@@ -1,16 +1,14 @@
-package com.wtt.agribusiness.product.controller;
+package com.wtt.agribusiness.product.app;
 
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import com.wtt.agribusiness.product.vo.AttrGroupRelationVo;
 import com.wtt.agribusiness.product.vo.AttrRespVo;
 import com.wtt.agribusiness.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.wtt.agribusiness.product.entity.AttrEntity;
 import com.wtt.agribusiness.product.service.AttrService;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.common.utils.R;

@@ -49,5 +49,10 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
 
+        - id: agribusiness_host_route
+          uri: lb://agribusiness-product
+          predicates:
+            - Host=**.agribusiness.com,agribusiness.com
+
 ## 前端项目，/api
 ## http://localhost:88/api/captcha.jpg

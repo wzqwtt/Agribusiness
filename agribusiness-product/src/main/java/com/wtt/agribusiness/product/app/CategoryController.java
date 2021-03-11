@@ -1,20 +1,17 @@
-package com.wtt.agribusiness.product.controller;
+package com.wtt.agribusiness.product.app;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wtt.agribusiness.product.entity.CategoryEntity;
 import com.wtt.agribusiness.product.service.CategoryService;
-import com.wtt.common.utils.PageUtils;
 import com.wtt.common.utils.R;
 
 

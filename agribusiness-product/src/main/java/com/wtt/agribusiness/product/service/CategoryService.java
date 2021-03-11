@@ -1,6 +1,7 @@
 package com.wtt.agribusiness.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wtt.agribusiness.product.vo.Catelog2Vo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.product.entity.CategoryEntity;
 
@@ -31,5 +32,9 @@ public interface CategoryService extends IService<CategoryEntity> {
     Long[] findCatelogPath(Long catelogId);
 
     void updateCascade(CategoryEntity category);
+
+    List<CategoryEntity> getLevel1Categorys();
+
+    Map<String, List<Catelog2Vo>> getCatalogJson();
 }
 

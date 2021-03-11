@@ -1,7 +1,6 @@
-package com.wtt.agribusiness.product.controller;
+package com.wtt.agribusiness.product.app;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -9,7 +8,6 @@ import com.wtt.common.valid.AddGroup;
 import com.wtt.common.valid.UpdateGroup;
 import com.wtt.common.valid.UpdateStatusGroup;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +19,6 @@ import com.wtt.agribusiness.product.entity.BrandEntity;
 import com.wtt.agribusiness.product.service.BrandService;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.common.utils.R;
-
-import javax.validation.Valid;
 
 
 /**
