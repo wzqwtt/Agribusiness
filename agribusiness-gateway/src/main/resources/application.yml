@@ -52,7 +52,12 @@ spring:
         - id: agribusiness_host_route
           uri: lb://agribusiness-product
           predicates:
-            - Host=**.agribusiness.com,agribusiness.com
+            - Host=agribusiness.com
+
+        - id: agribusiness_search_route
+          uri: lb://agribusiness-search
+          predicates:
+            - Host=search.agribusiness.com
 
 ## 前端项目，/api
 ## http://localhost:88/api/captcha.jpg

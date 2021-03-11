@@ -17,8 +17,8 @@
     <div class="header_head_box">
         <b class="header_head_p">
             <div style="overflow: hidden">
-                <a href="/static/search/#" class="header_head_p_a1" style="width:73px;">
-                    谷粒商城首页
+                <a href="http://agribusiness.com" class="header_head_p_a1" style="width:73px;">
+                    助农销售首页
                 </a>
                 <a href="/static/search/#" class="header_head_p_a">
                     <!--<img src="/static/search/img/img_05.png" style="border-radius: 50%;"/>-->
@@ -75,7 +75,7 @@
             </li>
             <span>|</span>
             <li class="header_wdjd" style="width:80px;">
-                <a href="/static/search/#">我的谷粒商城</a>
+                <a href="/static/search/#">我的助农商城</a>
                 <img src="/static/search/image/down-@1x.png" />
                 <!--<b class="glyphicon glyphicon-menu-down"></b>-->
                 <div class="header_wdjd_txt">
@@ -387,7 +387,7 @@
             </li>
             <span>|</span>
             <li class="header_sjjd">
-                <a href="/static/search/#">手机谷粒商城</a>
+                <a href="/static/search/#">手机助农商城</a>
                 <div class="header_sjjd_div">
                     <img src="/static/search/img/01.png" />
                 </div>
@@ -399,7 +399,7 @@
 <!--搜索导航-->
 <div class="header_sous">
     <div class="logo">
-        <a href="/static/search/#"><img src="/static/search/./image/logo1.jpg" alt=""></a>
+        <a href="http://agribusiness.com"><img src="/static/search/./image/logo1.jpg" alt=""></a>
     </div>
     <div class="header_form">
         <input type="text" placeholder="手机" />
@@ -418,10 +418,10 @@
     <div class="header_form_nav">
         <ul>
             <li>
-                <a href="/static/search/#">谷粒商城之家</a>
+                <a href="/static/search/#">助农商城之家</a>
             </li>
             <li>
-                <a href="/static/search/#">谷粒商城专卖店</a>
+                <a href="/static/search/#">助农商城专卖店</a>
             </li>
             <li>
                 <a href="/static/search/#">平板</a>
@@ -505,7 +505,7 @@
                             <a href="/static/search/#" style="color: #999;">中国电信</a>
                             <a href="/static/search/#" style="color: #999;">中国移动</a>
                             <a href="/static/search/#" style="color: #999;">中国联通</a>
-                            <a href="/static/search/#" style="color: #999;">谷粒商城通信</a>
+                            <a href="/static/search/#" style="color: #999;">助农商城通信</a>
                             <a href="/static/search/#" style="color: #999;">170选号</a>
                         </li>
                         <a href="/static/search/#" style="color: #111;" class="aaa">手机配件 ></a>
@@ -3555,11 +3555,11 @@
     });
     $('.tab_im img').hover(function(){
         var a=$(this).prop('src');
-        var index=$(this).parents('li').index();
+        var index=$(this).parents('li').list();
         $(this).parents('li').css('border','2px solid red').siblings('li').css('border','1px solid #ccc');
         $(this).parents('ul').prev().find('img').prop('src',a);
-        $(this).parents('ul').siblings('.tab_JE').find('a').eq(index).css('display','block').siblings('a').css('display','none');
-        $(this).parents('ul').siblings('.tab_R').find('span').eq(index).css('display','block').siblings('span').css('display','none')
+        $(this).parents('ul').siblings('.tab_JE').find('a').eq(list).css('display','block').siblings('a').css('display','none');
+        $(this).parents('ul').siblings('.tab_R').find('span').eq(list).css('display','block').siblings('span').css('display','none')
     });
 
     $(".JD_ipone_one").hover(function(){
@@ -3569,7 +3569,7 @@
     });
 
     $("#tab>li").click(function() {
-        var i = $(this).index();
+        var i = $(this).list();
         $("#container>div").hide().eq(i).show()
     });
     $(".dizhi_show").hover(function(){
@@ -3598,10 +3598,10 @@
 
 
     $(".rig_tab>div").hover(function(){
-        var i = $(this).index();
+        var i = $(this).list();
         $(this).find('.ico').css({display:'block'}).stop(true).animate({top:"190px"},300)
     },function(){
-        var i = $(this).index();
+        var i = $(this).list();
         $(this).find('.ico').css({display:'none'}).stop(true).animate({top:"230px"})
     });
 
