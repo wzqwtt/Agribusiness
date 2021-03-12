@@ -52,7 +52,7 @@ spring:
         - id: agribusiness_host_route
           uri: lb://agribusiness-product
           predicates:
-            - Host=agribusiness.com
+            - Host=agribusiness.com,item.agribusiness.com
 
         - id: agribusiness_search_route
           uri: lb://agribusiness-search

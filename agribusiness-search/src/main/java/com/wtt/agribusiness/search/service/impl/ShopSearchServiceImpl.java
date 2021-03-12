@@ -110,8 +110,11 @@ public class ShopSearchServiceImpl implements ShopSearchService {
                 boolQuery.filter(nestedQuery);
             }
         }
+
         //1.2、bool - filter - 按照库存是否有进行查询
-        boolQuery.filter(QueryBuilders.termQuery("hasStock", param.getHasStock() == 1));
+        if (param.getHasStock() != null) {
+            boolQuery.filter(QueryBuilders.termQuery("hasStock", param.getHasStock() == 1));
+        }
         ////1.2、bool - filter - 按照价格区间进行查询
 //        if (!StringUtils.isEmpty(param.getSkuPrice())) {
 //            //1_500/_500/500_
@@ -297,6 +300,12 @@ public class ShopSearchServiceImpl implements ShopSearchService {
         //5.3 分页信息-总页码-计算 11/2 = 5...1
         int totalPages = (int) total % EsConstant.PRODUCT_PAGESIZE == 0 ? ((int) total / EsConstant.PRODUCT_PAGESIZE) : ((int) total / EsConstant.PRODUCT_PAGESIZE + 1);
         result.setTotalPage(totalPages);
+
+        List<Integer> pageNavs = new ArrayList<>();
+        for(int i = 1; i<= totalPages;i++){
+            pageNavs.add(i);
+        }
+        result.setPageNavs(pageNavs);
 
         return result;
     }
