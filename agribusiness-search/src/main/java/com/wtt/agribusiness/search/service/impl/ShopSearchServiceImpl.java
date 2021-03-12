@@ -14,6 +14,9 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -96,25 +99,25 @@ public class ShopSearchServiceImpl implements ShopSearchService {
         //1.2、bool - filter - 按照库存是否有进行查询
         boolQuery.filter(QueryBuilders.termQuery("hasStock", param.getHasStock() == 1));
         ////1.2、bool - filter - 按照价格区间进行查询
-        if (!StringUtils.isEmpty(param.getSkuPrice())) {
-            //1_500/_500/500_
-            RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("skuPrice");
-            String[] s = param.getSkuPrice().split("_");
-            if (s.length == 2) {
-                //区间
-                rangeQuery.gte(s[0]).lte(s[1]);
-            } else if (s.length == 1) {
-                if (param.getSkuPrice().startsWith("_")) {
-                    //_500
-                    rangeQuery.lte(s[0]);
-                }
-                if (param.getSkuPrice().endsWith("_")) {
-                    //500_
-                    rangeQuery.gte(s[0]);
-                }
-            }
-            boolQuery.filter(rangeQuery);
-        }
+//        if (!StringUtils.isEmpty(param.getSkuPrice())) {
+//            //1_500/_500/500_
+//            RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("skuPrice");
+//            String[] s = param.getSkuPrice().split("_");
+//            if (s.length == 2) {
+//                //区间
+//                rangeQuery.gte(s[0]).lte(s[1]);
+//            } else if (s.length == 1) {
+//                if (param.getSkuPrice().startsWith("_")) {
+//                    //_500
+//                    rangeQuery.lte(s[0]);
+//                }
+//                if (param.getSkuPrice().endsWith("_")) {
+//                    //500_
+//                    rangeQuery.gte(s[0]);
+//                }
+//            }
+//            boolQuery.filter(rangeQuery);
+//        }
         //把以前的所有条件都拿过来，进行封装
         sourceBuilder.query(boolQuery);
 
@@ -148,6 +151,34 @@ public class ShopSearchServiceImpl implements ShopSearchService {
         /**
          * 聚合分析
          */
+        //3.1、品牌聚合
+        TermsAggregationBuilder brand_agg = AggregationBuilders.terms("brand_agg");
+        brand_agg.field("brandId.keyword").size(50);
+        //brand_agg的子聚合
+        brand_agg.subAggregation(AggregationBuilders.terms("brand_name_agg").field("brandName.keyword").size(1));
+        brand_agg.subAggregation(AggregationBuilders.terms("brand_img_agg").field("brandImg.keyword").size(1));
+        //TODO 聚合品牌信息
+        sourceBuilder.aggregation(brand_agg);
+
+        //3.2、分类聚合
+        TermsAggregationBuilder catalog_agg = AggregationBuilders.terms("catalog_agg").field("catalogId.keyword").size(20);
+        catalog_agg.subAggregation(AggregationBuilders.terms("catalog_name_agg").field("catalogName.keyword").size(1));
+        //TODO 聚合分类信息
+        sourceBuilder.aggregation(catalog_agg);
+
+        //3.3、属性聚合
+        NestedAggregationBuilder attr_agg = AggregationBuilders.nested("attr_agg", "attrs");
+        //聚合出当前所有的attrId
+        TermsAggregationBuilder attr_id_agg = AggregationBuilders.terms("attr_id_agg").field("attrs.attrId.keyword");
+        //聚合分析出当前attrId对应的attrName
+        attr_id_agg.subAggregation(AggregationBuilders.terms("attr_name_agg").field("attrs.attrName.keyword").size(1));
+        //聚合分析出当前attrId对应的所有可能的属性值attrValue
+        attr_id_agg.subAggregation(AggregationBuilders.terms("attr_value_agg").field("attrs.attrValue.keyword").size(50));
+        attr_agg.subAggregation(attr_id_agg);
+        //TODO 聚合属性信息
+        sourceBuilder.aggregation(attr_agg);
+
+
         String s = sourceBuilder.toString();
         System.out.println("构建的DSL：" + s);
 
