@@ -1,6 +1,7 @@
 package com.wtt.agribusiness.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wtt.agribusiness.product.vo.SkuItemVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.product.entity.SkuInfoEntity;
 
@@ -23,5 +24,7 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
     PageUtils queryPageByCondition(Map<String, Object> params);
 
     List<SkuInfoEntity> getSkusBySpuId(Long spuId);
+
+    SkuItemVo item(Long skuId);
 }
 

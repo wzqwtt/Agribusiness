@@ -2,6 +2,7 @@ package com.wtt.agribusiness.product.service.impl;
 
 import com.mysql.cj.util.StringUtils;
 import com.wtt.agribusiness.product.service.SkuInfoService;
+import com.wtt.agribusiness.product.vo.SkuItemVo;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -94,6 +95,23 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
         List<SkuInfoEntity> list = this.list(new QueryWrapper<SkuInfoEntity>().eq("spu_id",spuId));
         return list;
+    }
+
+    @Override
+    public SkuItemVo item(Long skuId) {
+        SkuItemVo skuItemVo = new SkuItemVo();
+        //1、sku基本信息获取  pms_sku_info
+
+        //2、sku的图片信息
+
+        //3、获取spu销售属性组合
+
+        //4、获取spu的介绍
+
+        //5、获取spu的规格参数信息
+
+
+        return null;
     }
 
 
