@@ -24,7 +24,7 @@ public class AgribusinessElasticSearchConfig {
     public RestHighLevelClient esRestClient() {
         RestHighLevelClient client = new RestHighLevelClient(
                 RestClient.builder(
-                        new HttpHost("82.156.24.170", 9200, "http")));
+                        new HttpHost("192.168.56.10", 9200, "http")));
         return client;
     }
 
