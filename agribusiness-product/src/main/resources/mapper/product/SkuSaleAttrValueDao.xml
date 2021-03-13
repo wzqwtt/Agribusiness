@@ -3,7 +3,7 @@
 
 <mapper namespace="com.wtt.agribusiness.product.dao.SkuSaleAttrValueDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.wtt.agribusiness.product.entity.SkuSaleAttrValueEntity" id="skuSaleAttrValueMap">
         <result property="id" column="id"/>
         <result property="skuId" column="sku_id"/>
@@ -12,6 +12,18 @@
         <result property="attrValue" column="attr_value"/>
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
+    <select id="getSaleAttrsBySpuId" resultType="com.wtt.agribusiness.product.vo.SkuItemSaleAttrVo">
+
+        SELECT
+            ssav.`attr_id` attr_id,
+            ssav.`attr_name` attr_name,
+            GROUP_CONCAT(DISTINCT ssav.`attr_value`) attr_values
+        FROM	`pms_sku_info` info
+        LEFT JOIN `pms_sku_sale_attr_value` ssav ON ssav.`sku_id` = info.`sku_id`
+        WHERE info.`spu_id` = #{spuId}
+        GROUP BY ssav.`attr_id`,ssav.`attr_name`
+
+    </select>
 
 
 </mapper>

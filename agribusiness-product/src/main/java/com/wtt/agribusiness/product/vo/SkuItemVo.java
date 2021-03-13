@@ -4,9 +4,11 @@ import com.wtt.agribusiness.product.entity.SkuImagesEntity;
 import com.wtt.agribusiness.product.entity.SkuInfoEntity;
 import com.wtt.agribusiness.product.entity.SpuInfoDescEntity;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
+@ToString
 @Data
 public class SkuItemVo {
     //1、sku基本信息获取  pms_sku_info
@@ -24,23 +26,5 @@ public class SkuItemVo {
     //5、获取spu的规格参数信息
     List<SpuItemAttrGroupVo> groupAttrs;
 
-    @Data
-    public static class SkuItemSaleAttrVo{
-        private Long attrId;    //属性id
-        private String attrName;    //属性名
-        private List<String> attrValues;
-    }
-
-    @Data
-    public static class SpuItemAttrGroupVo{
-        private String groupName;
-        private List<SpuBaseAttrVo> attrs;
-    }
-
-    @Data
-    public static class SpuBaseAttrVo{
-        private String attrName;
-        private List<String> attrValues;
-    }
 
 }
