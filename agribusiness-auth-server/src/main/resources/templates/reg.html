@@ -5989,7 +5989,7 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
         <div class="register-box">
             <label for="username" class="other_label">
                 <span>中国 0086∨</span>
-                <input class="phone" maxlength="20" type="text" placeholder="建议使用常用手机">
+                <input class="phone" id="phoneNum" maxlength="20" type="text" placeholder="建议使用常用手机">
             </label>
             <div class="tips">
 
@@ -6263,6 +6263,12 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 				//正在倒计时
 			}else {
 				//1、给指定手机号发送验证码
+				$.get("http://auth.agribusiness.com/sms/sendcode?phone="+$("#phoneNum").val(),function (data) {
+					if(data.code != 0){
+						alert("data.msg");
+					}
+				});
+				console.log("正在执行验证码操作");
 				timeoutChangeStyle();
 			}
 		});

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-//@ConfigurationProperties(prefix = "spring.cloud.alicloud.sms")
+@ConfigurationProperties(prefix = "spring.cloud.alicloud.sms")
 @Data
 @Component
 public class SmsComponent {
@@ -20,7 +20,7 @@ public class SmsComponent {
     private String templateId;
     private String appcode;
 
-    public void sendSmsCode1(String phone,String code){
+    public void sendSmsCode(String phone,String code){
 //        String host = "https://gyytz.market.alicloudapi.com";
 //        String path = "/sms/smsSend";
         String method = "POST";
