@@ -59,5 +59,9 @@ spring:
           predicates:
             - Host=search.agribusiness.com
 
+        - id: agribusiness_auth_route
+          uri: lb://agribusiness-auth-server
+          predicates:
+            - Host=auth.agribusiness.com
 ## 前端项目，/api
 ## http://localhost:88/api/captcha.jpg
