@@ -1,5 +1,6 @@
 package com.wtt.agribusiness.product.app;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -62,12 +63,21 @@ public class CategoryBrandRelationController {
     public R relationBrandList(@RequestParam(value = "catId",required = true) Long catId){
         List<BrandEntity> vos = categoryBrandRelationService.getBrandsByCatId(catId);
 
-        List<BrandVo> collect = vos.stream().map(item -> {
+        List<BrandVo> collect = new ArrayList<BrandVo>();
+        for (BrandEntity vo : vos) {
+            System.out.println(vo);
             BrandVo brandVo = new BrandVo();
-            brandVo.setBrandId(item.getBrandId());
-            brandVo.setBrandName(item.getName());
-            return brandVo;
-        }).collect(Collectors.toList());
+            brandVo.setBrandId(vo.getBrandId());
+            brandVo.setBrandName(vo.getName());
+            collect.add(brandVo);
+        }
+
+//        List<BrandVo> collect = vos.stream().map(item -> {
+//            BrandVo brandVo = new BrandVo();
+//            brandVo.setBrandId(item.getBrandId());
+//            brandVo.setBrandName(item.getName());
+//            return brandVo;
+//        }).collect(Collectors.toList());
 
         return R.ok().put("data",collect);
     }

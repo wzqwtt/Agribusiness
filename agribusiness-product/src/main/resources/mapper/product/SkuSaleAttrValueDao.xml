@@ -12,16 +12,27 @@
         <result property="attrValue" column="attr_value"/>
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
-    <select id="getSaleAttrsBySpuId" resultType="com.wtt.agribusiness.product.vo.SkuItemSaleAttrVo">
+    
+    <resultMap id="SkuItemSaleAttrVo" type="com.wtt.agribusiness.product.vo.SkuItemSaleAttrVo">
+        <result column="attr_id" property="attrId"></result>
+        <result column="attr_name" property="attrName"></result>
+        <collection property="attrValues" ofType="com.wtt.agribusiness.product.vo.AttrValueWithSkuIdVo">
+            <result column="attr_value" property="attrValue"></result>
+            <result column="sku_ids" property="skuIds"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getSaleAttrsBySpuId" resultMap="SkuItemSaleAttrVo">
 
         SELECT
             ssav.`attr_id` attr_id,
             ssav.`attr_name` attr_name,
-            GROUP_CONCAT(DISTINCT ssav.`attr_value`) attr_values
+            ssav.`attr_value`,
+            GROUP_CONCAT(DISTINCT info.`sku_id`) sku_ids
         FROM	`pms_sku_info` info
         LEFT JOIN `pms_sku_sale_attr_value` ssav ON ssav.`sku_id` = info.`sku_id`
         WHERE info.`spu_id` = #{spuId}
-        GROUP BY ssav.`attr_id`,ssav.`attr_name`
+        GROUP BY ssav.`attr_id`,ssav.`attr_name`,ssav.`attr_value`
 
     </select>
 
