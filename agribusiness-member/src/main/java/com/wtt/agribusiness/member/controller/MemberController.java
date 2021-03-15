@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.wtt.agribusiness.member.exception.PhoneExistException;
+import com.wtt.agribusiness.member.exception.UsernameExistException;
 import com.wtt.agribusiness.member.feign.CouponFeignService;
+import com.wtt.agribusiness.member.vo.MemberRegistVo;
+import com.wtt.common.exception.BizCodeEnume;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.wtt.agribusiness.member.entity.MemberEntity;
 import com.wtt.agribusiness.member.service.MemberService;
@@ -34,6 +34,21 @@ public class MemberController {
 
     @Autowired
     CouponFeignService couponFeignService;
+
+
+    @PostMapping("/regist")
+    public R regist(@RequestBody MemberRegistVo vo){
+
+        try {
+            memberService.regist(vo);
+        }catch (PhoneExistException e){
+            return R.error(BizCodeEnume.PHONE_EXIST_EXCEPTION.getCode(),BizCodeEnume.PHONE_EXIST_EXCEPTION.getMsg());
+        }catch (UsernameExistException e){
+            return R.error(BizCodeEnume.USER_EXIST_EXCEPTION.getCode(),BizCodeEnume.USER_EXIST_EXCEPTION.getMsg());
+        }
+
+        return R.ok();
+    }
 
     //测试
     @RequestMapping("/coupons")

@@ -1,6 +1,9 @@
 package com.wtt.agribusiness.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wtt.agribusiness.member.exception.PhoneExistException;
+import com.wtt.agribusiness.member.exception.UsernameExistException;
+import com.wtt.agribusiness.member.vo.MemberRegistVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.member.entity.MemberEntity;
 
@@ -16,5 +19,11 @@ import java.util.Map;
 public interface MemberService extends IService<MemberEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void regist(MemberRegistVo vo);
+
+    void checkPhoneUnique(String phone) throws PhoneExistException;
+
+    void checkUsernameUnique(String username) throws UsernameExistException;
 }
 
