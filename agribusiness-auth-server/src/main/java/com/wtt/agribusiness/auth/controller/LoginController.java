@@ -3,6 +3,7 @@ package com.wtt.agribusiness.auth.controller;
 import com.alibaba.fastjson.TypeReference;
 import com.wtt.agribusiness.auth.feign.MemberFeignService;
 import com.wtt.agribusiness.auth.feign.ThirdPartFeignService;
+import com.wtt.agribusiness.auth.vo.UserLoginVo;
 import com.wtt.agribusiness.auth.vo.UserRegistVo;
 import com.wtt.common.constant.AuthServerConstant;
 import com.wtt.common.exception.BizCodeEnume;
@@ -15,10 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -128,6 +126,26 @@ public class LoginController {
             //校验出错，转发到注册页
             return "redirect:http://auth.agribusiness.com/reg.html";
         }
+    }
+
+
+    @PostMapping("/login")
+    public String login(UserLoginVo vo,RedirectAttributes redirectAttributes){
+
+        //远程登陆
+        R r = memberFeignService.login(vo);
+        if(r.getCode() == 0){
+            //成功
+            return "redirect:http://agribusiness.com";
+        }else{
+            //失败
+            Map<String,String> errors = new HashMap<>();
+            errors.put("msg",r.getData(new TypeReference<String>(){}));
+            redirectAttributes.addFlashAttribute("errors",errors);
+            return "redirect:http://auth.agribusiness.com/login.html";
+        }
+
+
     }
 
 }

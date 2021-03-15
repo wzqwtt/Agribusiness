@@ -7,6 +7,7 @@ import java.util.Map;
 import com.wtt.agribusiness.member.exception.PhoneExistException;
 import com.wtt.agribusiness.member.exception.UsernameExistException;
 import com.wtt.agribusiness.member.feign.CouponFeignService;
+import com.wtt.agribusiness.member.vo.MemberLoginVo;
 import com.wtt.agribusiness.member.vo.MemberRegistVo;
 import com.wtt.common.exception.BizCodeEnume;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,17 @@ public class MemberController {
 
     @Autowired
     CouponFeignService couponFeignService;
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginVo vo){
+
+        MemberEntity entity = memberService.login(vo);
+        if(entity!=null){
+            return R.ok();
+        }else{
+            return R.error(BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getCode(),BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }
+    }
 
 
     @PostMapping("/regist")

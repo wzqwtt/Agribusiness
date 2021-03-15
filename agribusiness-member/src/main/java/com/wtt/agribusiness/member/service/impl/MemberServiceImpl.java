@@ -4,6 +4,7 @@ import com.wtt.agribusiness.member.dao.MemberLevelDao;
 import com.wtt.agribusiness.member.entity.MemberLevelEntity;
 import com.wtt.agribusiness.member.exception.PhoneExistException;
 import com.wtt.agribusiness.member.exception.UsernameExistException;
+import com.wtt.agribusiness.member.vo.MemberLoginVo;
 import com.wtt.agribusiness.member.vo.MemberRegistVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -80,6 +81,36 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         Integer count = memberDao.selectCount(new QueryWrapper<MemberEntity>().eq("username", username));
         if (count > 0) {
             throw new UsernameExistException();
+        }
+    }
+
+    @Override
+    public MemberEntity login(MemberLoginVo vo) {
+
+        String loginacct = vo.getLoginacct();
+        String password = vo.getPassword();
+
+        //1、去数据库查询
+        //select * from ums_member where username = ? or mobile = ?
+        MemberDao memberDao = this.baseMapper;
+        MemberEntity entity = memberDao.selectOne(new QueryWrapper<MemberEntity>().eq("username", loginacct).or().eq("mobile", loginacct));
+
+        if(entity == null){
+            //登陆失败
+            return null;
+        }else{
+            //获取到数据库的password字段
+            String passwordDb = entity.getPassword();
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            //密码匹配
+            boolean matches = passwordEncoder.matches(password, passwordDb);
+            if(matches){
+                //登陆成功
+                return entity;
+            }else{
+                return null;
+            }
+
         }
     }
 
