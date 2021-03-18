@@ -109,7 +109,7 @@ public class LoginController {
                 }else{
                     //失败
                     Map<String,String> errors = new HashMap<>();
-                    errors.put("msg",r.getData(new TypeReference<String>(){}));
+                    errors.put("msg",r.getData("msg",new TypeReference<String>(){}));
                     redirectAttributes.addFlashAttribute("errors",errors);
                     return "redirect:http://auth.agribusiness.com/reg.html";
                 }
@@ -136,11 +136,12 @@ public class LoginController {
         R r = memberFeignService.login(vo);
         if(r.getCode() == 0){
             //成功
+            //TODO 登陆后的功能
             return "redirect:http://agribusiness.com";
         }else{
             //失败
             Map<String,String> errors = new HashMap<>();
-            errors.put("msg",r.getData(new TypeReference<String>(){}));
+            errors.put("msg",r.getData("msg",new TypeReference<String>(){}));
             redirectAttributes.addFlashAttribute("errors",errors);
             return "redirect:http://auth.agribusiness.com/login.html";
         }
