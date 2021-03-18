@@ -9,6 +9,7 @@ import com.wtt.agribusiness.member.exception.UsernameExistException;
 import com.wtt.agribusiness.member.feign.CouponFeignService;
 import com.wtt.agribusiness.member.vo.MemberLoginVo;
 import com.wtt.agribusiness.member.vo.MemberRegistVo;
+import com.wtt.agribusiness.member.vo.SocialUser;
 import com.wtt.common.exception.BizCodeEnume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,18 @@ public class MemberController {
 
     @Autowired
     CouponFeignService couponFeignService;
+
+    @PostMapping("/oauth2/login")
+    public R oauthlogin(@RequestBody SocialUser socialUser) throws Exception {
+
+            MemberEntity entity = memberService.login(socialUser);
+        if(entity!=null){
+            return R.ok().setData(entity);
+        }else{
+            return R.error(BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getCode(),BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }
+    }
+
 
     @PostMapping("/login")
     public R login(@RequestBody MemberLoginVo vo){

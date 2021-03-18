@@ -5,6 +5,7 @@ import com.wtt.agribusiness.member.exception.PhoneExistException;
 import com.wtt.agribusiness.member.exception.UsernameExistException;
 import com.wtt.agribusiness.member.vo.MemberLoginVo;
 import com.wtt.agribusiness.member.vo.MemberRegistVo;
+import com.wtt.agribusiness.member.vo.SocialUser;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.member.entity.MemberEntity;
 
@@ -28,5 +29,7 @@ public interface MemberService extends IService<MemberEntity> {
     void checkUsernameUnique(String username) throws UsernameExistException;
 
     MemberEntity login(MemberLoginVo vo);
+
+    MemberEntity login(SocialUser socialUser) throws Exception;
 }
 

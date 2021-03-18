@@ -1,5 +1,6 @@
 package com.wtt.agribusiness.auth.feign;
 
+import com.wtt.agribusiness.auth.vo.SocialUser;
 import com.wtt.agribusiness.auth.vo.UserLoginVo;
 import com.wtt.agribusiness.auth.vo.UserRegistVo;
 import com.wtt.common.utils.R;
@@ -15,5 +16,8 @@ public interface MemberFeignService {
 
     @PostMapping("/member/member/login")
     R login(@RequestBody UserLoginVo vo);
+
+    @PostMapping("/member/member/oauth2/login")
+    R oauthlogin(@RequestBody SocialUser socialUser) throws Exception;
 
 }
