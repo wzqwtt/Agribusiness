@@ -18,6 +18,11 @@
         <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
     </properties>
     <dependencies>
+        <!-- 1、整合Spring Session，完成Session共享问题 -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.wtt.agribusiness</groupId>

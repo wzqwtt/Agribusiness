@@ -3,7 +3,7 @@ package com.wtt.agribusiness.auth.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.wtt.agribusiness.auth.feign.MemberFeignService;
-import com.wtt.agribusiness.auth.vo.MemberRespVo;
+import com.wtt.common.vo.MemberRespVo;
 import com.wtt.agribusiness.auth.vo.SocialUser;
 import com.wtt.common.utils.HttpUtils;
 import com.wtt.common.utils.R;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class OAuth2Controller {
     MemberFeignService memberFeignService;
 
     @GetMapping("/oauth2.0/weibo/success")
-    public String weibo(@RequestParam("code") String code) throws Exception {
+    public String weibo(@RequestParam("code") String code,HttpSession session) throws Exception {
 
         Map<String, String> map = new HashMap<>();
         map.put("client_id","269863394");
@@ -53,6 +54,8 @@ public class OAuth2Controller {
             if(oauthlogin.getCode() == 0){
                 MemberRespVo data = oauthlogin.getData("data", new TypeReference<MemberRespVo>(){});
                 log.info("登陆成功，用户：{}",data.toString());
+                //1、第一次使用session
+                session.setAttribute("loginUser",data);
                 //2、登陆成功就跳回首页
                 return "redirect:http://agribusiness.com";
 
