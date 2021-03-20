@@ -8,6 +8,7 @@ import com.wtt.agribusiness.auth.vo.UserRegistVo;
 import com.wtt.common.constant.AuthServerConstant;
 import com.wtt.common.exception.BizCodeEnume;
 import com.wtt.common.utils.R;
+import com.wtt.common.vo.MemberRespVo;
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
@@ -48,6 +50,7 @@ public class LoginController {
 
     /**
      * 获取短信验证码
+     *
      * @param phone
      * @return
      */
@@ -66,7 +69,7 @@ public class LoginController {
             }
         }
         //2、验证码的再次校验
-        String code  = UUID.randomUUID().toString().substring(0, 5);
+        String code = UUID.randomUUID().toString().substring(0, 5);
         String substring = code + "_" + System.currentTimeMillis();
         //redis缓存验证码，防止同一个phone在60秒内再次发送验证码
         redisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phone, substring, 10, TimeUnit.MINUTES);
@@ -78,18 +81,19 @@ public class LoginController {
 
     /**
      * redirectAttributes模拟重定向携带数据
+     *
      * @param vo
      * @param result
      * @param redirectAttributes
      * @return
      */
     @PostMapping("/regist")
-    public String regist(@Valid UserRegistVo vo, BindingResult result, RedirectAttributes redirectAttributes){
-        if(result.hasErrors()){
+    public String regist(@Valid UserRegistVo vo, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
             Map<String, String> errors = result.getFieldErrors()
-                    .stream().collect(Collectors.toMap(FieldError::getField,FieldError::getDefaultMessage));
+                    .stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
 //            model.addAttribute("errors",errors);
-            redirectAttributes.addFlashAttribute("errors",errors);
+            redirectAttributes.addFlashAttribute("errors", errors);
             //校验出错，转发到注册页
             return "redirect:http://auth.agribusiness.com/reg.html";
         }
@@ -97,32 +101,33 @@ public class LoginController {
         //1、校验验证码
         String code = vo.getCode();
         String s = redisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + vo.getPhone());
-        if(!StringUtils.isEmpty(s)){
-            if(code.equals(s.split("_")[0])){
+        if (!StringUtils.isEmpty(s)) {
+            if (code.equals(s.split("_")[0])) {
                 //删除验证码,令牌机制
                 redisTemplate.delete(AuthServerConstant.SMS_CODE_CACHE_PREFIX + vo.getPhone());
                 //验证码成功，调用远程服务进行注册
                 R r = memberFeignService.regist(vo);
-                if(r.getCode() == 0){
+                if (r.getCode() == 0) {
                     //成功
                     return "redirect:http://auth.agribusiness.com/login.html";
-                }else{
+                } else {
                     //失败
-                    Map<String,String> errors = new HashMap<>();
-                    errors.put("msg",r.getData("msg",new TypeReference<String>(){}));
-                    redirectAttributes.addFlashAttribute("errors",errors);
+                    Map<String, String> errors = new HashMap<>();
+                    errors.put("msg", r.getData("msg", new TypeReference<String>() {
+                    }));
+                    redirectAttributes.addFlashAttribute("errors", errors);
                     return "redirect:http://auth.agribusiness.com/reg.html";
                 }
-            }else{
+            } else {
                 Map<String, String> errors = new HashMap<>();
-                errors.put("code","验证码错误");
-                redirectAttributes.addFlashAttribute("errors",errors);
+                errors.put("code", "验证码错误");
+                redirectAttributes.addFlashAttribute("errors", errors);
                 return "redirect:http://auth.agribusiness.com/reg.html";
             }
-        }else{
+        } else {
             Map<String, String> errors = new HashMap<>();
-            errors.put("code","验证码错误");
-            redirectAttributes.addFlashAttribute("errors",errors);
+            errors.put("code", "验证码错误");
+            redirectAttributes.addFlashAttribute("errors", errors);
             //校验出错，转发到注册页
             return "redirect:http://auth.agribusiness.com/reg.html";
         }
@@ -130,22 +135,36 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public String login(UserLoginVo vo,RedirectAttributes redirectAttributes){
+    public String login(UserLoginVo vo, RedirectAttributes redirectAttributes,
+                        HttpSession session) {
 
         //远程登陆
         R r = memberFeignService.login(vo);
-        if(r.getCode() == 0){
+        if (r.getCode() == 0) {
             //成功
-            //TODO 登陆后的功能
+            MemberRespVo data = r.getData("data", new TypeReference<MemberRespVo>() {
+            });
+            session.setAttribute(AuthServerConstant.LOGIN_USER, data);
             return "redirect:http://agribusiness.com";
-        }else{
+        } else {
             //失败
-            Map<String,String> errors = new HashMap<>();
-            errors.put("msg",r.getData("msg",new TypeReference<String>(){}));
-            redirectAttributes.addFlashAttribute("errors",errors);
+            Map<String, String> errors = new HashMap<>();
+            errors.put("msg", r.getData("msg", new TypeReference<String>() {
+            }));
+            redirectAttributes.addFlashAttribute("errors", errors);
             return "redirect:http://auth.agribusiness.com/login.html";
         }
+    }
 
+    @GetMapping("/login.html")
+    public String loginPage(HttpSession session){
+        Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);
+        if(attribute == null){
+            //没登陆
+            return "login";
+        }else{
+            return "redirect:http://agribusiness.com";
+        }
 
     }
 
