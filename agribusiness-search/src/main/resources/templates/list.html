@@ -66,7 +66,7 @@
         <ul>
             <li>
                 <a th:if="${session.loginUser == null}" href="http://auth.agribusiness.com/login.html" class="li_2">你好，请登录</a>
-                <a th:if="${session.loginUser != null}" style="width: 100px" class="li_2">[[${session.loginUser.nickname}}]]</a>
+                <a th:if="${session.loginUser != null}" style="width: 100px" class="li_2">[[${session.loginUser==null?'':session.loginUser.nickname}]]</a>
             </li>
             <li>
                 <a th:if="${session.loginUser == null}" href="http://auth.agribusiness.com/reg.html">免费注册</a>
