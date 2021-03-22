@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.wtt.agribusiness.cart.interceptor.CartInterceptor;
 import com.wtt.agribusiness.cart.service.CartService;
+import com.wtt.agribusiness.cart.vo.Cart;
 import com.wtt.agribusiness.cart.vo.CartItem;
 import com.wtt.agribusiness.cart.vo.SkuInfoVo;
 import com.wtt.agribusiness.cart.vo.UserInfoTo;
@@ -17,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,7 +39,7 @@ public class CartServiceImpl implements CartService {
 
         String res = (String) cartOps.get(skuId.toString());
         CartItem cartItem = new CartItem();
-        if(StringUtils.isEmpty(res)){
+        if (StringUtils.isEmpty(res)) {
             //购物车无此商品
             //2、新商品添加到购物车
             R skuInfo = productFeignService.getSkuInfo(skuId);
@@ -55,12 +57,12 @@ public class CartServiceImpl implements CartService {
             cartItem.setSkuAttr(values);
 
             String s = JSON.toJSONString(cartItem);
-            cartOps.put(skuId.toString(),s);
-        }else{
+            cartOps.put(skuId.toString(), s);
+        } else {
             //购物车有此商品，修改商品数量即可
             cartItem = JSON.parseObject(res, CartItem.class);
             cartItem.setCount(cartItem.getCount() + num);
-            cartOps.put(skuId.toString(),JSON.toJSONString(cartItem));
+            cartOps.put(skuId.toString(), JSON.toJSONString(cartItem));
         }
 
 
@@ -75,9 +77,42 @@ public class CartServiceImpl implements CartService {
         return cartItem;
     }
 
+    @Override
+    public Cart getCart() {
+        Cart cart = new Cart();
+        //1、q区分登陆或不登陆状态
+        UserInfoTo userInfoTo = CartInterceptor.threadLocal.get();
+        if (userInfoTo.getUserId() != null) {
+            //登陆
+            String cartKey = CART_PREFIX + userInfoTo.getUserId();
+            //如果临时购物车的数据还没有合并[合并购物车]
+            String tempCartKey = CART_PREFIX + userInfoTo.getUserKey();
+            List<CartItem> tempCartItems = getCartItems(tempCartKey);
+            if (tempCartItems != null) {
+                //临时购物车有数据，需要合并
+                for (CartItem item : tempCartItems) {
+                    addToCart(item.getSkuId(), item.getCount());
+                }
+                //清楚临时购物车数据
+                clearCart(tempCartKey);
+            }
+            //3、获取登陆后的购物车数据【包含合并过来的临时购物车和登陆后的数据】
+            List<CartItem> cartItems = getCartItems(cartKey);
+            cart.setItems(cartItems);
+        } else {
+            //没登陆
+            String cartKey = CART_PREFIX + userInfoTo.getUserKey();
+            //获取临时购物车的所有购物项
+            List<CartItem> cartItems = getCartItems(cartKey);
+            cart.setItems(cartItems);
+        }
+        return cart;
+    }
+
 
     /**
      * 获取到要操作的购物车
+     *
      * @return
      */
     private BoundHashOperations<String, Object, Object> getCartOps() {
@@ -92,5 +127,51 @@ public class CartServiceImpl implements CartService {
         }
         BoundHashOperations<String, Object, Object> operation = redisTemplate.boundHashOps(cartKey);
         return operation;
+    }
+
+
+    private List<CartItem> getCartItems(String cartKey) {
+        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(cartKey);
+        List<Object> values = hashOps.values();
+//            cart.setItems();
+        if (values != null && values.size() > 0) {
+            List<CartItem> collect = values.stream().map((obj) -> {
+                String str = (String) obj;
+                CartItem cartItem = JSON.parseObject(str, CartItem.class);
+                return cartItem;
+            }).collect(Collectors.toList());
+            return collect;
+        }
+
+        return null;
+    }
+
+    @Override
+    public void clearCart(String cartKey) {
+//        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(cartKey);
+        redisTemplate.delete(cartKey);
+    }
+
+    @Override
+    public void checkItem(Long skuId, Integer check) {
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        CartItem cartItem = getCartItem(skuId);
+        cartItem.setCheck(check == 1 ? true : false);
+        String s = JSON.toJSONString(cartItem);
+        cartOps.put(skuId.toString(), s);
+    }
+
+    @Override
+    public void changeItemCount(Long skuId, Integer num) {
+        CartItem cartItem = getCartItem(skuId);
+        cartItem.setCount(num);
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        cartOps.put(skuId.toString(),JSON.toJSONString(cartItem));
+    }
+
+    @Override
+    public void deleteItem(Long skuId) {
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        cartOps.delete(skuId.toString());
     }
 }

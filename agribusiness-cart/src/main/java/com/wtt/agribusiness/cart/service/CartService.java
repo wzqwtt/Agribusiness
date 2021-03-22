@@ -1,5 +1,6 @@
 package com.wtt.agribusiness.cart.service;
 
+import com.wtt.agribusiness.cart.vo.Cart;
 import com.wtt.agribusiness.cart.vo.CartItem;
 
 public interface CartService {
@@ -17,4 +18,36 @@ public interface CartService {
      * @return
      */
     CartItem getCartItem(Long skuId);
+
+    /**
+     * 获取整个购物车
+     * @return
+     */
+    Cart getCart();
+
+    /**
+     * 清空购物车
+     * @param cartKey
+     */
+    void clearCart(String cartKey);
+
+    /**
+     * 勾选购物项
+     * @param skuId
+     * @param check
+     */
+    void checkItem(Long skuId, Integer check);
+
+    /**
+     * 改变商品数量
+     * @param skuId
+     * @param num
+     */
+    void changeItemCount(Long skuId, Integer num);
+
+    /**
+     * 删除购物项
+     * @param skuId
+     */
+    void deleteItem(Long skuId);
 }
