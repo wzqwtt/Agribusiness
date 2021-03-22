@@ -68,5 +68,10 @@ spring:
           uri: lb://agribusiness-cart
           predicates:
             - Host=cart.agribusiness.com
+
+        - id: agribusiness_order_route
+          uri: lb://agribusiness-order
+          predicates:
+            - Host=order.agribusiness.com
 ## 前端项目，/api
 ## http://localhost:88/api/captcha.jpg
