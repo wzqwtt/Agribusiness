@@ -26,7 +26,7 @@ public class Cart {
 
     public Integer getCountNum() {
         int count = 0;
-        if(items!=null&&items.size()>0){
+        if (items != null && items.size() > 0) {
             for (CartItem item : items) {
                 count += item.getCount();
             }
@@ -37,7 +37,7 @@ public class Cart {
 
     public Integer getCountType() {
         int count = 0;
-        if(items!=null&&items.size()>0){
+        if (items != null && items.size() > 0) {
             for (CartItem item : items) {
                 count += 1;
             }
@@ -49,10 +49,12 @@ public class Cart {
     public BigDecimal getTotalAmount() {
         BigDecimal amount = new BigDecimal("0");
         //1、计算购物项总价
-        if(items!=null&&items.size()>0){
+        if (items != null && items.size() > 0) {
             for (CartItem item : items) {
-                BigDecimal totalPrice = item.getTotalPrice();
-                amount = amount.add(totalPrice);
+                if (item.getCheck()) {
+                    BigDecimal totalPrice = item.getTotalPrice();
+                    amount = amount.add(totalPrice);
+                }
             }
         }
         //2、减去优惠总价
