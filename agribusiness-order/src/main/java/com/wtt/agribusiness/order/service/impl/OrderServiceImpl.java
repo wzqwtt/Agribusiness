@@ -1,6 +1,7 @@
 package com.wtt.agribusiness.order.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
+import com.wtt.agribusiness.order.constant.OrderConstant;
 import com.wtt.agribusiness.order.feign.CartFeiginService;
 import com.wtt.agribusiness.order.feign.MemberFeignService;
 import com.wtt.agribusiness.order.feign.WmsFeignService;
@@ -12,13 +13,16 @@ import com.wtt.agribusiness.order.vo.SkuStockVo;
 import com.wtt.common.utils.R;
 import com.wtt.common.vo.MemberRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -42,6 +46,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Autowired
     CartFeiginService cartFeiginService;
+
+    @Autowired
+    StringRedisTemplate redisTemplate;
 
     @Autowired
     ThreadPoolExecutor executor;
@@ -87,7 +94,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             R hasStock = wmsFeignService.getSkusHasStock(collect);
             List<SkuStockVo> data = hasStock.getData(new TypeReference<List<SkuStockVo>>() {
             });
-            if(data!=null){
+            if (data != null) {
                 Map<Long, Boolean> map = data.stream().collect(Collectors.toMap(SkuStockVo::getSkuId, SkuStockVo::getHasStock));
                 confirmVo.setStocks(map);
             }
@@ -100,7 +107,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         //4、其他数据自动计算
 
         //TODO 5、防重令牌
-
+        String token = UUID.randomUUID().toString().replace("-", "");
+        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberRespVo.getId(), token, 30, TimeUnit.MINUTES);
+        confirmVo.setOrderToken(token);
 
         CompletableFuture.allOf(getAddressFuture, cartFuture).get();
 
