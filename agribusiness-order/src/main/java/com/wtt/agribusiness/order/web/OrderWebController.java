@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.ExecutionException;
+
 @Controller
 public class OrderWebController {
 
@@ -16,7 +19,7 @@ public class OrderWebController {
     OrderService orderService;
 
     @GetMapping("/toTrade")
-    public String toTrade(Model model){
+    public String toTrade(Model model, HttpServletRequest request) throws ExecutionException, InterruptedException {
         OrderConfirmVo confirmVo = orderService.confirmOrder();
 
         model.addAttribute("orderConfirmData",confirmVo);

@@ -6,6 +6,7 @@ import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.order.entity.OrderEntity;
 
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 订单
@@ -22,7 +23,7 @@ public interface OrderService extends IService<OrderEntity> {
      * 给订单确认页返回需要用的数据
      * @return
      */
-    OrderConfirmVo confirmOrder();
+    OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException;
 
 }
 

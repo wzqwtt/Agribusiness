@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.member.entity.MemberReceiveAddressEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,12 @@ import java.util.Map;
 public interface MemberReceiveAddressService extends IService<MemberReceiveAddressEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 获取会员收货列表
+     * @param memberId
+     * @return
+     */
+    List<MemberReceiveAddressEntity> getAddress(Long memberId);
 }
 

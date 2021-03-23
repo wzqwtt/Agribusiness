@@ -3,6 +3,8 @@ package com.wtt.agribusiness.cart.service;
 import com.wtt.agribusiness.cart.vo.Cart;
 import com.wtt.agribusiness.cart.vo.CartItem;
 
+import java.util.List;
+
 public interface CartService {
     /**
      * 将商品添加到购物车
@@ -50,4 +52,11 @@ public interface CartService {
      * @param skuId
      */
     void deleteItem(Long skuId);
+
+    /**
+     * 获取当前登陆用户的购物项
+     * @return
+     */
+    List<CartItem> getUserCartItems();
+
 }
