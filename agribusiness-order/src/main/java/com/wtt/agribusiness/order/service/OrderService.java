@@ -2,6 +2,8 @@ package com.wtt.agribusiness.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wtt.agribusiness.order.vo.OrderConfirmVo;
+import com.wtt.agribusiness.order.vo.OrderSubmitVo;
+import com.wtt.agribusiness.order.vo.SubmitOrderResponseVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.order.entity.OrderEntity;
 
@@ -25,5 +27,11 @@ public interface OrderService extends IService<OrderEntity> {
      */
     OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException;
 
+    /**
+     * 下单方法
+     * @param vo
+     * @return
+     */
+    SubmitOrderResponseVo submitOrder(OrderSubmitVo vo);
 }
 

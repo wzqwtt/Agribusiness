@@ -3,7 +3,7 @@
 
 <mapper namespace="com.wtt.agribusiness.ware.dao.WareSkuDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.wtt.agribusiness.ware.entity.WareSkuEntity" id="wareSkuMap">
         <result property="id" column="id"/>
         <result property="skuId" column="sku_id"/>
@@ -15,8 +15,18 @@
     <update id="addStock">
         UPDATE `wms_ware_sku` SET stock = stock + #{skuNum} WHERE sku_id = #{skuId} AND ware_id = #{wareId}
     </update>
+
+    <update id="lockSkuStock">
+            update `wms_ware_sku` set stock_locked = stock_locked + #{num}
+            where sku_id = #{skuId} and ware_id = #{wareId} and stock - stock_locked >= #{num}
+    </update>
+
     <select id="getSkuStock" resultType="java.lang.Long">
         select SUM(stock - stock_locked) from wms_ware_sku where sku_id = #{skuId}
+    </select>
+
+    <select id="listWareIdHasSkuStock" resultType="java.lang.Long">
+        select ware_id from `wms_ware_sku` where sku_id = #{skuId} and stock - stock_locked > 0
     </select>
 
 

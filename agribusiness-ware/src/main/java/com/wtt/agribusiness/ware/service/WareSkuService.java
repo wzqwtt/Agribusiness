@@ -1,7 +1,9 @@
 package com.wtt.agribusiness.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wtt.agribusiness.ware.vo.LockStockResult;
 import com.wtt.agribusiness.ware.vo.SkuHasStockVo;
+import com.wtt.agribusiness.ware.vo.WareSkuLockVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.ware.entity.WareSkuEntity;
 
@@ -27,5 +29,12 @@ public interface WareSkuService extends IService<WareSkuEntity> {
      * @return
      */
     List<SkuHasStockVo> getSkusHasStock(List<Long> skuIds);
+
+    /**
+     * 锁定库存方法
+     * @param vo
+     * @return
+     */
+    Boolean orderLockStock(WareSkuLockVo vo);
 }
 
