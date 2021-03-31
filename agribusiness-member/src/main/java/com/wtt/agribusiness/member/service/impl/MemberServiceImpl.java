@@ -68,8 +68,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         String encode = passwordEncoder.encode(vo.getPassword());
         entity.setPassword(encode);
 
-        //其他默认信息
-
         //保存
         memberDao.insert(entity);
     }

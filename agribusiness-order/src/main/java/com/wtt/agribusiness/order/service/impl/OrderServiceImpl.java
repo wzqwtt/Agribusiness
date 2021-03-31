@@ -1,6 +1,7 @@
 package com.wtt.agribusiness.order.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.wtt.agribusiness.order.constant.OrderConstant;
 import com.wtt.agribusiness.order.dao.OrderItemDao;
@@ -89,7 +90,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 //        List<MemberAddressVo> address = memberFeignService.getAddress(memberRespVo.getId());
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 
-
         CompletableFuture<Void> getAddressFuture = CompletableFuture.runAsync(() -> {
             //1、远程查询s所有的收获列表
             RequestContextHolder.setRequestAttributes(requestAttributes);
@@ -130,6 +130,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
         return confirmVo;
     }
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -177,19 +178,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 lockVo.setLocks(OrderItemVos);
                 //远程锁库存
                 R r = wmsFeignService.orderLockStock(lockVo);
-                if(r.getCode() == 0){
+                if (r.getCode() == 0) {
                     //锁成功了
                     response.setOrder(order.getOrder());
+
                     return response;
-                }else {
+                } else {
                     //锁定失败
                     String msg = (String) r.get("msg");
                     throw new NoStockException(msg);
-//                    response.setCode(3);
-//                    return response;
                 }
 
-            }else{
+            } else {
                 //失败
                 response.setCode(2);
                 return response;
@@ -207,7 +207,43 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     }
 
     /**
+     * 获取订单的信息
+     * @param orderSn
+     * @return
+     */
+    @Override
+    public PayVo getOrderPay(String orderSn) {
+        PayVo payVo = new PayVo();
+        OrderEntity order = this.getOrderByOrderSn(orderSn);
+
+
+        BigDecimal bigDecimal = order.getPayAmount().setScale(2, BigDecimal.ROUND_UP);
+        payVo.setTotal_amount(bigDecimal.toString());
+
+        payVo.setOut_trade_no(order.getOrderSn());
+        List<OrderItemEntity> order_sn = orderItemService.list(new QueryWrapper<OrderItemEntity>().eq("order_sn", orderSn));
+        OrderItemEntity entity = order_sn.get(0);
+        payVo.setSubject(entity.getSkuName());
+        payVo.setBody(entity.getSkuAttrsVals());
+
+        return payVo;
+    }
+
+    /**
+     * 按照订单号获取订单信息
+     *
+     * @param orderSn
+     * @return
+     */
+    @Override
+    public OrderEntity getOrderByOrderSn(String orderSn) {
+        OrderEntity orderEntity = this.baseMapper.selectOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderSn));
+        return orderEntity;
+    }
+
+    /**
      * 保存订单数据到数据库
+     *
      * @param order
      */
     private void saveOrder(OrderCreateTo order) {

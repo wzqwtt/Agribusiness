@@ -3,6 +3,7 @@ package com.wtt.agribusiness.order.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wtt.agribusiness.order.vo.OrderConfirmVo;
 import com.wtt.agribusiness.order.vo.OrderSubmitVo;
+import com.wtt.agribusiness.order.vo.PayVo;
 import com.wtt.agribusiness.order.vo.SubmitOrderResponseVo;
 import com.wtt.common.utils.PageUtils;
 import com.wtt.agribusiness.order.entity.OrderEntity;
@@ -33,5 +34,19 @@ public interface OrderService extends IService<OrderEntity> {
      * @return
      */
     SubmitOrderResponseVo submitOrder(OrderSubmitVo vo);
+
+    /**
+     * 获取当前订单的支付信息
+     * @param orderSn
+     * @return
+     */
+    PayVo getOrderPay(String orderSn);
+
+    /**
+     * 按照订单号获取订单信息
+     * @param orderSn
+     * @return
+     */
+    OrderEntity getOrderByOrderSn(String orderSn);
 }
 
