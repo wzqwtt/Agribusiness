@@ -4,17 +4,17 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
     alicloud:
-      access-key: LTAI4GCc6NNhAPGCf5PSFi4R
-      secret-key: ioyHDagLGLZmG1DMEk8vEhKFVRNaIA
+      access-key: ****************************
+      secret-key: ******************************
       oss:
         endpoint: oss-cn-beijing.aliyuncs.com
         bucket: agribusiness
       sms:
         host: https://gyytz.market.alicloudapi.com
         path: /sms/smsSend
-        smsSignId: 2e65b1bb3d054466b82f0c9d125465e2
-        templateId: 908e94ccf08b4476ba6c876d13f084ad
-        appcode: c34d28a590aa48c0812a8bbc46eadc78
+        smsSignId: *******************************
+        templateId: *******************************
+        appcode: *******************************
   application:
     name: agribusiness-third-party
 server:
